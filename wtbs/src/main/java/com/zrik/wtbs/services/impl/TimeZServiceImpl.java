@@ -2,52 +2,61 @@ package com.zrik.wtbs.services.impl;
 
 import com.zrik.wtbs.dto.ReqTimeZone;
 import com.zrik.wtbs.dto.ResponseTemplate;
-import com.zrik.wtbs.dto.TimezoneDto;
-import com.zrik.wtbs.entities.TimeZone;
-import com.zrik.wtbs.repositories.TimezoneRepository;
-import com.zrik.wtbs.services.TimezoneService;
+import com.zrik.wtbs.dto.TimeZDto;
+import com.zrik.wtbs.entities.TimeZ;
+import com.zrik.wtbs.repositories.TimeZRepository;
+import com.zrik.wtbs.services.TimeZService;
 import org.modelmapper.ModelMapper;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.http.HttpStatus;
+import org.springframework.http.ResponseEntity;
 import org.springframework.stereotype.Service;
+import org.springframework.transaction.annotation.Transactional;
 
-import java.util.ArrayList;
-import java.util.Optional;
+import java.util.*;
 import java.util.stream.Collectors;
 
 @Service
-public class TimeZoneServiceImpl implements TimezoneService {
+public class TimeZServiceImpl implements TimeZService {
+    private Logger logger = LoggerFactory.getLogger(TimeZServiceImpl.class);
 
-    @Autowired
-    private ModelMapper mapper;
+    private final ModelMapper mapper;
 
-    @Autowired
-    private TimezoneRepository timezoneRepository;
+    private final TimeZRepository timezRepository;
+
+    public TimeZServiceImpl(ModelMapper mapper, TimeZRepository timezRepository) {
+        this.mapper = mapper;
+        this.timezRepository = timezRepository;
+    }
 
 
     @Override
-    public ResponseTemplate findTimeZoneByPlaceOrTimezoneOrOffset(ReqTimeZone reqTimeZone) {
-        ArrayList<TimeZone> res = null;
+    @Transactional(readOnly = false)
+    public ResponseEntity<ResponseTemplate> findTimeZoneByPlaceOrTimezoneOrOffset(ReqTimeZone reqTimeZone) {
+        ArrayList<TimeZ> res = null;
         try {
             if (reqTimeZone.getOffset() != null) {
-                res = timezoneRepository.findByUtcOffset(Integer.parseInt(reqTimeZone.getOffset()));
+                res = timezRepository.findByUtcOffset(Integer.parseInt(reqTimeZone.getOffset()));
             } else {
-                res = timezoneRepository.findByCountryOrCityOrTimezoneLike(reqTimeZone.getPlaceOrTimezone());
+                res = timezRepository.findByCountryIgnoreCaseContainingOrCityIgnoreCaseContainingOrTimezoneIgnoreCaseContaining(
+                        reqTimeZone.getPlaceOrTimezone(),
+                        reqTimeZone.getPlaceOrTimezone(),
+                        reqTimeZone.getPlaceOrTimezone());
             }
-        } catch (Exception e) {
-            return ResponseTemplate.builder()
-                    .status(HttpStatus.BAD_REQUEST)
+        } catch (Exception e)    {
+            return ResponseEntity.badRequest().body(
+                    ResponseTemplate.builder()
                     .data(null)
                     .error(Optional.of(e.getMessage()))
-                    .build();
+                    .build());
         }
 
-        ArrayList<TimezoneDto> data = res.stream()
-                                        .map((timeZone) -> mapper.map(timeZone, TimezoneDto.class))
+        ArrayList<TimeZDto> data = res.stream()
+                                        .map((timeZ) -> mapper.map(timeZ, TimeZDto.class))
                                         .collect(Collectors.toCollection(ArrayList::new));
-        return ResponseTemplate.builder()
-                .status(HttpStatus.OK)
+        return ResponseEntity.ok(ResponseTemplate.builder()
                 .data(Optional.of(data))
-                .build();
+                .build());
     }
 }

@@ -30,6 +30,22 @@ services:
   #     - NODE_ENV=production
   #   networks:
   #     - wtb_net
+  #   depends_on:
+  #     - wtbdb
+
+  wtbdb:
+    container_name: wtbdb
+    image: postgres:15.2-alpine
+    restart: always
+    env_file:
+      - ./database/.env
+    volumes:
+      - wtbdata:/var/lib/postgresql/data
+    ports:
+      - "5432:5432"
+
+volumes:
+  wtbdata:
 
 
 networks:

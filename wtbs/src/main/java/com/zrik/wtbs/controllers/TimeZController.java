@@ -11,6 +11,7 @@ import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 
 
+@CrossOrigin(maxAge = 3600)
 @RestController
 @RequestMapping(path = Constant.PathTZ)
 public class TimeZController {
@@ -21,7 +22,8 @@ public class TimeZController {
 
     @GetMapping()
     @ResponseBody
-    public ResponseEntity<ResponseTemplate> getTimezoneByCondition(@RequestBody ReqTimeZone reqTimeZone) {
-        return timezService.findTimeZoneByPlaceOrTimezoneOrOffset(reqTimeZone);
+    public ResponseEntity<ResponseTemplate> getTimezoneByCondition(@RequestParam(required = false, defaultValue = "") String placeOrTimezone,
+                                                                   @RequestParam(required = false, defaultValue = "") String offset) {
+        return timezService.findTimeZoneByPlaceOrTimezoneOrOffset(placeOrTimezone, offset);
     }
 }

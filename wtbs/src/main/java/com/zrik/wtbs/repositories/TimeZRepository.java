@@ -7,17 +7,20 @@ import org.springframework.data.repository.query.Param;
 import org.springframework.stereotype.Repository;
 
 import java.util.ArrayList;
-import java.util.List;
 import java.util.Optional;
 
 @Repository
 public interface TimeZRepository extends JpaRepository<TimeZ, Integer> {
 
-    public ArrayList<TimeZ> findByCountryIgnoreCaseContainingOrCityIgnoreCaseContainingOrTimezoneIgnoreCaseContaining(String vl1, String vl2, String vl3);
+    @Query("SELECT tz from TimeZ tz WHERE " +
+            "tz.country ilike %:vl1% " +
+            "or tz.city ilike %:vl1% " +
+            "or tz.timezone ilike %:vl1% " +
+            "order by tz.id " +
+            "limit 10")
+    public ArrayList<TimeZ> findByCountryOrCityOrTimezone(@Param("vl1") String vl1);
 
-    public ArrayList<TimeZ> findByCountryLike(String vl1);
-
-    public ArrayList<TimeZ> findByUtcOffset(int offset);
+    public ArrayList<TimeZ> findByUtcOffset(float offset);
 
     public Optional<TimeZ> findById(int id);
 }

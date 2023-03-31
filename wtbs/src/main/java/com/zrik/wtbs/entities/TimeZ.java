@@ -19,7 +19,7 @@ public class TimeZ {
     private String utc;
 
     @Column(name = "utc_offset", nullable = false)
-    private int utcOffset;
+    private float utcOffset;
 
     @Column(name = "timezone", nullable = false)
     private String timezone;

@@ -6,5 +6,5 @@ import org.springframework.http.ResponseEntity;
 
 
 public interface TimeZService {
-    public ResponseEntity<ResponseTemplate> findTimeZoneByPlaceOrTimezoneOrOffset(ReqTimeZone reqTimeZone);
+    public ResponseEntity<ResponseTemplate> findTimeZoneByPlaceOrTimezoneOrOffset(String placeOrTimezone, String offset);
 }

@@ -9,7 +9,6 @@ import com.zrik.wtbs.services.TimeZService;
 import org.modelmapper.ModelMapper;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
-import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.ResponseEntity;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
@@ -33,17 +32,18 @@ public class TimeZServiceImpl implements TimeZService {
 
     @Override
     @Transactional(readOnly = false)
-    public ResponseEntity<ResponseTemplate> findTimeZoneByPlaceOrTimezoneOrOffset(ReqTimeZone reqTimeZone) {
-        ArrayList<TimeZ> res = null;
+    public ResponseEntity<ResponseTemplate> findTimeZoneByPlaceOrTimezoneOrOffset(String placeOrTimezone, String offset) {
+        ArrayList<TimeZ> res = new ArrayList<>();
         try {
-            if (reqTimeZone.getOffset() != null) {
-                res = timezRepository.findByUtcOffset(Integer.parseInt(reqTimeZone.getOffset()));
-            } else {
-                res = timezRepository.findByCountryIgnoreCaseContainingOrCityIgnoreCaseContainingOrTimezoneIgnoreCaseContaining(
-                        reqTimeZone.getPlaceOrTimezone(),
-                        reqTimeZone.getPlaceOrTimezone(),
-                        reqTimeZone.getPlaceOrTimezone());
+            if (!offset.isBlank()) {
+                res = timezRepository.findByUtcOffset(Float.parseFloat(offset));
             }
+            if (!placeOrTimezone.isBlank()){
+                if (res.isEmpty()) res = timezRepository.findByCountryOrCityOrTimezone(placeOrTimezone);
+                else res.retainAll(timezRepository.findByCountryOrCityOrTimezone(placeOrTimezone));
+            }
+
+            logger.info("SEARCH " + placeOrTimezone + " : have " + String.valueOf(res.size()) + " cities");
         } catch (Exception e)    {
             return ResponseEntity.badRequest().body(
                     ResponseTemplate.builder()

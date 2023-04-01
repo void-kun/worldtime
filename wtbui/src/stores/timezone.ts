@@ -6,7 +6,7 @@ import timezoneService from '@/services/timezone.service';
 import localStore from '@/config/localstore';
 import Timeline from '@/models/Timeline';
 import { TIME_MODE } from '@/utils/constants';
-import { arrayRange } from '@/utils/datetime.utils';
+import { arrayRange } from '@/utils';
 
 export const useTimezoneStore = defineStore({
   id: 'timezone',

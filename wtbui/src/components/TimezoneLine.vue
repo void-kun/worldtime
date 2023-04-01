@@ -1,8 +1,5 @@
 <template>
-  <div
-    class="line"
-    :style="{ backgroundColor: isOdd ? '#ffffff' : 'rgb(247 247 247)' }"
-  >
+  <div class="line">
     <div class="line__options"></div>
     <div class="line__content">
       <div class="offset tooltip">
@@ -61,7 +58,6 @@ addIcons(PxHome);
 
 interface Props {
   timeline: Timeline;
-  isOdd: boolean;
   home: Timezone;
 }
 
@@ -83,6 +79,8 @@ const tooltiptext = computed(() => {
   }
 });
 
+console.log('rerun');
+
 const timezoneStore = useTimezoneStore();
 const currentTime = computed(() =>
   timezoneStore.currentTime(props.timeline.utcOffset)
@@ -95,6 +93,13 @@ const blink = computed(() => timezoneStore.blink);
   display: block;
   position: relative;
   padding: 10px 0;
+  &:nth-of-type(odd) {
+    background-color: #ffffff;
+  }
+  &:nth-of-type(even) {
+    background-color: #f5f5f5;
+  }
+
   &__content {
     display: flex;
     flex-direction: row;

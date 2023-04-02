@@ -1,5 +1,9 @@
 <template>
   <div class="line">
+    <v-icon
+      name="co-cursor-move"
+      class="move"
+    />
     <div class="line__options"></div>
     <div class="line__content">
       <div class="offset tooltip">
@@ -47,14 +51,14 @@
 <script setup lang="ts">
 import { computed, defineProps } from 'vue';
 import { addIcons } from 'oh-vue-icons';
-import { PxHome } from 'oh-vue-icons/icons';
+import { PxHome, CoCursorMove } from 'oh-vue-icons/icons';
 
 import Timezone from '@/models/Timezone';
 import { useTimezoneStore } from '@/stores/timezone';
 import HourLine from '@/components/HourLine.vue';
 import Timeline from '@/models/Timeline';
 
-addIcons(PxHome);
+addIcons(PxHome, CoCursorMove);
 
 interface Props {
   timeline: Timeline;
@@ -79,8 +83,6 @@ const tooltiptext = computed(() => {
   }
 });
 
-console.log('rerun');
-
 const timezoneStore = useTimezoneStore();
 const currentTime = computed(() =>
   timezoneStore.currentTime(props.timeline.utcOffset)
@@ -90,9 +92,11 @@ const blink = computed(() => timezoneStore.blink);
 
 <style lang="scss">
 .line {
-  display: block;
-  position: relative;
+  display: flex;
+  justify-content: center;
+  align-items: center;
   padding: 10px 0;
+
   &:nth-of-type(odd) {
     background-color: #ffffff;
   }
@@ -100,6 +104,10 @@ const blink = computed(() => timezoneStore.blink);
     background-color: #f5f5f5;
   }
 
+  .move {
+    cursor: move;
+    display: block;
+  }
   &__content {
     display: flex;
     flex-direction: row;
@@ -123,7 +131,6 @@ const blink = computed(() => timezoneStore.blink);
   align-items: flex-start;
   margin-left: 5px;
   width: 180px;
-  cursor: move;
   .country {
     display: flex;
     align-items: center;
@@ -157,7 +164,6 @@ const blink = computed(() => timezoneStore.blink);
   display: flex;
   flex-direction: column;
   align-items: flex-end;
-  cursor: move;
   widows: 70px;
   .current_time {
     font-size: 13px;

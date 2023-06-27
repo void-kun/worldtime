@@ -2,27 +2,27 @@ version: '3.7'
 
 services:
 
-  wtb_nginx:
-    container_name: wtbwebserver
-    build: ./nginx
-    tty: true
-    restart: always
-    ports:
-      - "80:80"
-    networks:
-      - wtb_net
-    depends_on:
-      # - wtbs
-      - wtbui
+  # wtb_nginx:
+  #   container_name: wtbwebserver
+  #   build: ./nginx
+  #   tty: true
+  #   restart: always
+  #   ports:
+  #     - "80:80"
+  #   networks:
+  #     - wtb_net
+  #   depends_on:
+  #     # - wtbs
+  #     - wtbui
 
-  wtbui:
-    container_name: wtbui
-    build: ./wtbui
-    environment:
-      - NODE_ENV=production
-    tty: true
-    networks:
-      - wtb_net
+  # wtbui:
+  #   container_name: wtbui
+  #   build: ./wtbui
+  #   environment:
+  #     - NODE_ENV=production
+  #   tty: true
+  #   networks:
+  #     - wtb_net
   # wtbs:
   #   container_name: wtbs
   #   build: ./wtbs

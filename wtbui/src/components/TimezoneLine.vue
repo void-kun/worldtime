@@ -96,14 +96,13 @@ const blink = computed(() => timezoneStore.blink);
   justify-content: center;
   align-items: center;
   padding: 10px 0;
-
+  top: 0px;
   &:nth-of-type(odd) {
     background-color: #ffffff;
   }
   &:nth-of-type(even) {
     background-color: #f5f5f5;
   }
-
   .move {
     cursor: move;
     display: block;

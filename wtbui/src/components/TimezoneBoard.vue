@@ -23,7 +23,7 @@
 </template>
 
 <script setup lang="ts">
-import { computed, onMounted } from 'vue';
+import { computed, onMounted, onUpdated } from 'vue';
 import { useTimezoneStore } from '@/stores/timezone';
 import TimezoneToolbar from '@/components/TimezoneToolbar.vue';
 import TimezoneLine from '@/components/TimezoneLine.vue';
@@ -34,6 +34,8 @@ const lines = computed(() => timezoneStore.timeline);
 const home = computed(() => timezoneStore.home);
 
 function onMouseDown(event: MouseEvent) {
+  console.log('mouse down');
+  
   const item = event.target as HTMLDivElement;
   if (
     !(item.className as unknown as SVGAnimatedString)?.baseVal?.includes('move')
@@ -41,10 +43,12 @@ function onMouseDown(event: MouseEvent) {
     return;
   const line = item.parentElement as HTMLDivElement;
   console.log(line.style.top);
-
+  console.log(event.clientY);
+  
+  line.style.background = '#444'
   line.style.position = 'absolute';
   line.style.zIndex = '1002';
-
+  
   function onMouseMove(event: MouseEvent) {
     line.style.top = `${event.clientY}px`;
   }
@@ -62,7 +66,13 @@ function onMouseDown(event: MouseEvent) {
 onMounted(() => {
   timezoneStore.initTimeline();
   timezoneStore.setCurrentTime();
+  console.log('board mounted');
 });
+
+onUpdated(() => {
+  console.log('board updated');
+})
+
 </script>
 
 <style lang="scss">

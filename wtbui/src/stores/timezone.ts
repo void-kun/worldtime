@@ -2,11 +2,11 @@ import moment from 'moment';
 import { defineStore } from 'pinia';
 
 import Timezone from '@/models/Timezone';
-import timezoneService from '@/services/timezone.service';
 import localStore from '@/config/localstore';
 import Timeline from '@/models/Timeline';
 import { TIME_MODE } from '@/utils/constants';
 import { arrayRange } from '@/utils';
+import { timezoneService } from '@/api';
 
 export const useTimezoneStore = defineStore({
   id: 'timezone',

@@ -4,8 +4,9 @@ import HomeView from '@/views/HomeView.vue';
 const routes: Array<RouteRecordRaw> = [
   {
     path: '/',
-    name: 'home',
+    name: 'timeline',
     component: HomeView,
+    meta: { layout: 'AppLayoutDefault' },
   },
 ];
 

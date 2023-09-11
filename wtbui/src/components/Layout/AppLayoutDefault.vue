@@ -1,15 +1,15 @@
 <template>
   <div class="container">
     <header-component />
-    <slot></slot>
+    <slot />
     <footer-component />
   </div>
 </template>
 
 <script lang="ts">
 import { defineComponent } from 'vue';
-import HeaderComponent from '@/components/Header.vue';
-import FooterComponent from '@/components/Footer.vue';
+import HeaderComponent from '@/components/Common/Header.vue';
+import FooterComponent from '@/components/Common/Footer.vue';
 
 export default defineComponent({
   name: 'MainLayoutComponent',

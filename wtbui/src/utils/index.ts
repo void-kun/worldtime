@@ -3,7 +3,7 @@ export const addHours = (date: Date, hours: number): Date => {
   return date;
 };
 
-export const arrayRange = (start: number, stop: number, step = 1) => {
+export const numberRange = (start: number, stop: number, step = 1) => {
   if (start > stop) return [];
   return Array.from(
     { length: (stop - start) / step + 1 },

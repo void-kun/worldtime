@@ -5,7 +5,7 @@ import Timezone from '@/models/Timezone';
 import localStore from '@/config/localstore';
 import Timeline from '@/models/Timeline';
 import { TIME_MODE } from '@/utils/constants';
-import { arrayRange } from '@/utils';
+import { numberRange } from '@/utils';
 import { timezoneService } from '@/api';
 
 export const useTimezoneStore = defineStore({
@@ -85,22 +85,26 @@ export const useTimezoneStore = defineStore({
       if (this._timeMode === TIME_MODE.MODE_24) {
         if (startHour < 0) {
           return [
-            ...arrayRange(24 - startHour, 23, 1),
-            ...arrayRange(0, 24 - startHour - 1, 1),
+            ...numberRange(24 - startHour, 23, 1),
+            ...numberRange(0, 24 - startHour - 1, 1),
           ];
         } else {
           return [
-            ...arrayRange(startHour, 23, 1),
-            ...arrayRange(0, startHour - 1, 1),
+            ...numberRange(startHour, 23, 1),
+            ...numberRange(0, startHour - 1, 1),
           ];
         }
-      } else if (this._timeMode === TIME_MODE.MODE_AM) {
+      } else if (this._timeMode === TIME_MODE.MODE_12) {
         return [
-          ...arrayRange(startHour, 11, 1),
-          ...arrayRange(0, 11, 1),
-          ...arrayRange(0, startHour - 1, 1),
+          ...numberRange(startHour, 11, 1),
+          ...numberRange(0, 11, 1),
+          ...numberRange(0, startHour - 1, 1),
         ];
       }
+    },
+    updateTimeline(newTimeline: Timeline[]) {
+      this._timeline.length = 0;
+      this._timeline.push(...newTimeline);
     },
   },
   getters: {

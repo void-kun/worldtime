@@ -1,9 +1,5 @@
 <template>
   <div class="line">
-    <v-icon
-      name="co-cursor-move"
-      class="move"
-    />
     <div class="line__options"></div>
     <div class="line__content">
       <div class="offset tooltip">
@@ -53,10 +49,10 @@ import { computed, defineProps } from 'vue';
 import { addIcons } from 'oh-vue-icons';
 import { PxHome, CoCursorMove } from 'oh-vue-icons/icons';
 
+import { useTimezoneStore } from '@/stores';
 import Timezone from '@/models/Timezone';
-import { useTimezoneStore } from '@/stores/timezone';
-import HourLine from '@/components/HourLine.vue';
 import Timeline from '@/models/Timeline';
+import HourLine from '@/components/Timeline/HourLine.vue';
 
 addIcons(PxHome, CoCursorMove);
 
@@ -92,17 +88,15 @@ const blink = computed(() => timezoneStore.blink);
 
 <style lang="scss">
 .line {
+  position: relative;
   display: flex;
   justify-content: center;
   align-items: center;
-  padding: 10px 0;
-  top: 0px;
-  &:nth-of-type(odd) {
-    background-color: #ffffff;
-  }
-  &:nth-of-type(even) {
-    background-color: #f5f5f5;
-  }
+  height: 60px;
+  width: 999px;
+  cursor: move;
+  background-color: #ffffff;
+
   .move {
     cursor: move;
     display: block;

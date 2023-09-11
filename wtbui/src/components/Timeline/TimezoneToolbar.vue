@@ -76,7 +76,7 @@ import { Vietnamese } from 'flatpickr/dist/l10n/vn';
 import flatPickr from 'vue-flatpickr-component';
 import 'flatpickr/dist/flatpickr.css';
 
-import { useTimezoneStore } from '@/stores/timezone';
+import { useTimezoneStore } from '@/stores';
 import { computed } from '@vue/reactivity';
 import Timezone from '@/models/Timezone';
 

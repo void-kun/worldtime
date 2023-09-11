@@ -1,17 +1,9 @@
 <template>
-  <main-layout>
-    <router-view />
-  </main-layout>
+  <app-layout />
 </template>
 
-<script lang="ts">
-import { defineComponent } from 'vue';
-import MainLayout from '@/components/MainLayout.vue';
-
-export default defineComponent({
-  components: { MainLayout },
-  name: 'App',
-});
+<script setup lang="ts">
+import AppLayout from '@/components/Layout/AppLayout.vue';
 </script>
 
 <style lang="scss">

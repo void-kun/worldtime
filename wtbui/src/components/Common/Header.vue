@@ -17,7 +17,7 @@
 
 <script lang="ts">
 import { defineComponent } from 'vue';
-import HourFormatComponent from '@/components/HourFormat.vue';
+import HourFormatComponent from '@/components/Common/HourFormat.vue';
 
 export default defineComponent({
   name: 'HeaderComponent',

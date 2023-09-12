@@ -15,16 +15,8 @@
   </header>
 </template>
 
-<script lang="ts">
-import { defineComponent } from 'vue';
+<script setup lang="ts">
 import HourFormatComponent from '@/components/Common/HourFormat.vue';
-
-export default defineComponent({
-  name: 'HeaderComponent',
-  components: {
-    HourFormatComponent,
-  },
-});
 </script>
 
 <style lang="scss">

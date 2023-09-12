@@ -10,30 +10,23 @@
   </div>
 </template>
 
-<script lang="ts">
-import { defineComponent, reactive } from 'vue';
+<script setup lang="ts">
+import { reactive } from 'vue';
 
-export default defineComponent({
-  name: 'FooterComponent',
-  setup() {
-    const hformat = reactive([
-      {
-        title: 'am\npm',
-        code: 'AM',
-      },
-      {
-        title: '24',
-        code: '24',
-      },
-      {
-        title: 'MX',
-        code: 'MX',
-      },
-    ]);
-
-    return { hformat };
+const hformat = reactive([
+  {
+    title: 'am\npm',
+    code: 'AM',
   },
-});
+  {
+    title: '24',
+    code: '24',
+  },
+  {
+    title: 'MX',
+    code: 'MX',
+  },
+]);
 </script>
 
 <style lang="scss">

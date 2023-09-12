@@ -38,7 +38,6 @@ function onMouseDown(_event: MouseEvent, index: number) {
   const linesEle = line.parentElement as HTMLDivElement;
   top = line.offsetTop - _event.clientY;
   lineHeight = line.offsetHeight;
-
   // create placeholder line
   const placeholderLine = createLinePlaceholder();
 
@@ -48,13 +47,25 @@ function onMouseDown(_event: MouseEvent, index: number) {
   line.style.backgroundColor = '#f5f5f5';
   line.style.top = `${_event.clientY + top}px`;
 
-  let lineId = Math.round((_event.clientY + top) / lineHeight);
+  let lineId = calculateLineId(_event.clientY, top, lineHeight);
   linesEle.insertBefore(placeholderLine, linesEle.children[lineId]);
 
   function onMouseMove(event: MouseEvent) {
-    line.style.top = `${event.clientY + top}px`;
-    const overLine = Math.round((event.clientY + top) / lineHeight);
-    if (overLine !== lineId) {
+    if (
+      event.clientY + top <= 0 ||
+      event.clientY + top >= (lineHeight - 2) * lines.value.length
+    ) {
+      line.style.position = 'relative';
+    } else {
+      line.style.position = 'absolute';
+      line.style.top = `${event.clientY + top}px`;
+    }
+    const overLine = calculateLineId(event.clientY, top, lineHeight);
+    if (overLine > lineId) {
+      lineId = overLine;
+      linesEle.removeChild(placeholderLine);
+      linesEle.insertBefore(placeholderLine, linesEle.children[lineId + 1]);
+    } else if (overLine < lineId) {
       lineId = overLine;
       linesEle.removeChild(placeholderLine);
       linesEle.insertBefore(placeholderLine, linesEle.children[lineId]);
@@ -67,7 +78,6 @@ function onMouseDown(_event: MouseEvent, index: number) {
     line.removeAttribute('style');
     linesEle.removeChild(placeholderLine);
     const swapedId = parseInt((linesEle.children[lineId] as HTMLElement).id);
-
     const newLines = swapLine(lines.value, index, swapedId);
     timezoneStore.updateTimeline(newLines);
     // remove the mouse move event
@@ -80,6 +90,18 @@ function createLinePlaceholder(): HTMLDivElement {
   placeholderLine.style.height = `${lineHeight}px`;
   placeholderLine.style.width = '999px';
   return placeholderLine;
+}
+
+function calculateLineId(
+  clientY: number,
+  top: number,
+  lineHeight: number
+): number {
+  const lineId = Math.round((clientY + top) / lineHeight);
+  if (lineId < 0) return 0;
+  if (lineId >= lines.value.length) return lines.value.length - 1;
+
+  return lineId;
 }
 
 function swapLine(
@@ -115,6 +137,8 @@ onMounted(() => {
 
     .timelines {
       display: flex;
+      overflow: hidden;
+      position: relative;
       flex-direction: column;
       user-select: none;
     }

@@ -96,6 +96,7 @@ const blink = computed(() => timezoneStore.blink);
   width: 999px;
   cursor: move;
   background-color: #ffffff;
+  box-shadow: 1px 1px 1px 1px #ccc;
 
   .move {
     cursor: move;

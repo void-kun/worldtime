@@ -6,18 +6,9 @@
   </div>
 </template>
 
-<script lang="ts">
-import { defineComponent } from 'vue';
+<script setup lang="ts">
 import HeaderComponent from '@/components/Common/Header.vue';
 import FooterComponent from '@/components/Common/Footer.vue';
-
-export default defineComponent({
-  name: 'MainLayoutComponent',
-  components: {
-    HeaderComponent,
-    FooterComponent,
-  },
-});
 </script>
 
 <style lang="scss">
